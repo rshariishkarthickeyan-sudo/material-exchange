@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\MaterialCategoryController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GatePassController;
+use App\Http\Controllers\DepartmentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,6 +16,17 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
+    Route::resource('departments', DepartmentController::class);
+
+    Route::resource(
+    'materials',
+    MaterialController::class
+    );
+
+    Route::resource(
+    'material-categories',
+    MaterialCategoryController::class
+    );
 
     Route::resource('gatepasses', GatePassController::class);
 

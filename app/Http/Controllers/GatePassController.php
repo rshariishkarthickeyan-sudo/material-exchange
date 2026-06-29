@@ -9,9 +9,9 @@ class GatePassController extends Controller
 {
     public function index()
     {
-        $gatepasses = GatePass::all();
+    $gatepasses = GatePass::latest()->get();
 
-        return view('gatepasses.index', compact('gatepasses'));
+    return view('gatepasses.index', compact('gatepasses'));
     }
 
     public function create()
