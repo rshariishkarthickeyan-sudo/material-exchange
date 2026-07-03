@@ -7,21 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Material extends Model
 {
     protected $fillable = [
-
         'material_code',
-
         'material_name',
-
         'material_category_id',
-
         'unit',
-
         'stock_quantity',
-
         'location',
-
         'status'
-
     ];
 
     public function category()
@@ -29,6 +21,15 @@ class Material extends Model
         return $this->belongsTo(
             MaterialCategory::class,
             'material_category_id'
+        );
+    }
+
+    public function gatePassMaterials()
+    {
+        return $this->hasMany(
+            GatePassMaterial::class,
+            'material_code',
+            'material_code'
         );
     }
 }

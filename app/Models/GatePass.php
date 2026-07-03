@@ -6,6 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class GatePass extends Model
 {
+
+    public $gatepasses = [
+    [
+        'category' => 'RETURNABLE',
+        'taken_by' => '',
+        'destination' => '',
+        'transport_mode' => '',
+        'due_date' => '',
+        'status' => 'PENDING_APPROVAL',
+
+        'materials' => [
+            [
+                'material_code' => '',
+                'material_name' => '',
+                'quantity' => 1,
+                'unit' => '',
+                'remarks' => '',
+            ]
+        ]
+    ]
+];
     protected $fillable = [
         'gate_pass_no',
         'category',
@@ -27,8 +48,14 @@ class GatePass extends Model
         'due_date' => 'date',
         'actual_return_date' => 'date',
         'approval_date' => 'datetime',
-        'security_date' => 'datetime'
+        'security_date' => 'datetime',
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
 
     public function materials()
     {
