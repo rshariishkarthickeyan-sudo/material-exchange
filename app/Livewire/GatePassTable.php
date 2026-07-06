@@ -9,18 +9,34 @@ use App\Models\Material;
 
 class GatePassTable extends Component
 {
-    public $gatepasses = [];
-
+    public $gate_pass_no;
 
     public $category = 'RETURNABLE';
 
-    public $taken_by = '';
+    // Prepared By
+    public $prepared_name = '';
+    public $prepared_ic_no = '';
+    public $prepared_designation = '';
+    public $prepared_group = '';
 
+    // Taken Out By
+    public $taken_name = '';
+    public $taken_ic_no = '';
+    public $taken_designation = '';
+    public $taken_group = '';
+
+    // Transport
+    public $transport_mode = '';
+    public $vehicle_no = '';
+
+    // Destination
     public $destination = '';
 
-    public $transport_mode = '';
-
+    // Returnable only
     public $due_date = '';
+
+    // Description
+    public $description = '';
 
     public $materials = [];
 
@@ -28,94 +44,48 @@ class GatePassTable extends Component
 
     public function mount()
     {
-    $this->materialsMaster = Material::orderBy('material_name')
-        ->get()
-        ->toArray();
+        $this->gate_pass_no =
+            'GP-' . now()->format('YmdHis');
 
-    $this->addRow();
+        $this->materialsMaster = Material::orderBy('material_name')
+            ->get()
+            ->toArray();
+
+        $this->addMaterialRow();
     }
 
-    public function addRow()
-{
-    $this->gatepasses[] = [
-    'gate_pass_no' => 'GP-' . now()->format('YmdHis'),
-    'category' => 'RETURNABLE',
-    'taken_by' => '',
-    'destination' => '',
-    'transport_mode' => '',
-    'due_date' => null,
-    'status' => 'PENDING_APPROVAL',
+    public function addMaterialRow()
+    {
+        if (count($this->materials) >= 10) {
+            return;
+        }
 
-    'materials' => [
-        [
+        $this->materials[] = [
             'material_code' => '',
             'material_name' => '',
+            'description' => '',
             'quantity' => 1,
             'unit' => '',
+            'price' => '',
             'remarks' => '',
-        ]
-    ]
-];
-}
-
-public function deleteRow($index)
-{
-    unset($this->gatepasses[$index]);
-
-    $this->gatepasses =
-        array_values($this->gatepasses);
-}
-
-    public function addMaterialRow($gpIndex)
-{
-    if (
-        count(
-            $this->gatepasses[$gpIndex]['materials']
-        ) >= 10
-    ) {
-        return;
+        ];
     }
 
-    $this->gatepasses[$gpIndex]['materials'][] = [
-
-        'material_code' => '',
-
-        'material_name' => '',
-
-        'quantity' => 1,
-
-        'unit' => '',
-
-        'remarks' => '',
-    ];
-}
-
-    public function deleteMaterialRow(
-    $gpIndex,
-    $matIndex
-)
+    public function deleteMaterialRow($index)
     {
-    unset(
-        $this->gatepasses[$gpIndex]
-        ['materials'][$matIndex]
-    );
+        unset($this->materials[$index]);
 
-    $this->gatepasses[$gpIndex]
-    ['materials'] = array_values(
-        $this->gatepasses[$gpIndex]
-        ['materials']
-    );
+        $this->materials =
+            array_values($this->materials);
     }
 
-    public function updatedMaterials($value, $name)
+    public function updated($name, $value)
     {
-        $parts = explode('.', $name);
+        if (str_contains($name, 'material_code')) {
 
-        if (
-            count($parts) == 2 &&
-            $parts[1] == 'material_code'
-        ) {
-            $index = $parts[0];
+            $parts = explode('.', $name);
+
+            $index = $parts[1];
 
             $material = Material::where(
                 'material_code',
@@ -134,97 +104,59 @@ public function deleteRow($index)
     }
 
     public function save()
-{
-    foreach ($this->gatepasses as $gp) {
-
+    {
         $gatePass = GatePass::create([
 
-            'gate_pass_no' =>
-                $gp['gate_pass_no'],
+            'gate_pass_no' => $this->gate_pass_no,
 
-            'category' =>
-                $gp['category'],
+            'category' => $this->category,
 
-            'created_by' =>
-                auth()->id(),
+            'created_by' => auth()->id(),
 
-            'taken_by' =>
-                $gp['taken_by'],
+            'taken_by' => $this->taken_name,
 
-            'destination' =>
-                $gp['destination'],
+            'destination' => $this->destination,
 
-            'transport_mode' =>
-                $gp['transport_mode'],
+            'transport_mode' => $this->transport_mode,
 
             'due_date' =>
-                $gp['due_date'] ?: null,
+                $this->category == 'RETURNABLE'
+                ? $this->due_date
+                : null,
 
-            'status' =>
-                'PENDING_APPROVAL',
+            'status' => 'PENDING_APPROVAL',
         ]);
 
-        foreach (
-            $gp['materials']
-            as $material
-        ) {
+        foreach ($this->materials as $material) {
 
-            if (
-                empty(
-                    $material['material_code']
-                )
-            ) {
+            if (empty($material['material_code'])) {
                 continue;
             }
 
             GatePassMaterial::create([
 
-                'gate_pass_id' =>
-                    $gatePass->id,
+                'gate_pass_id' => $gatePass->id,
 
-                'material_code' =>
-                    $material['material_code'],
+                'material_code' => $material['material_code'],
 
-                'material_name' =>
-                    $material['material_name'],
+                'material_name' => $material['material_name'],
 
-                'quantity' =>
-                    $material['quantity'],
+                'description' => $material['description'],
 
-                'unit' =>
-                    $material['unit'],
+                'quantity' => $material['quantity'],
 
-                'remarks' =>
-                    $material['remarks'],
+                'unit' => $material['unit'],
+
+                'price' => $material['price'],
+
+                'remarks' => $material['remarks'],
             ]);
         }
-    }
 
-    session()->flash(
-        'success',
-        'Saved Successfully'
-    );
-}
-    
-
-    public function resetForm()
-    {
-        $this->gate_pass_no =
-            'GP-' . now()->format('YmdHis');
-
-        $this->category = 'RETURNABLE';
-
-        $this->taken_by = '';
-
-        $this->destination = '';
-
-        $this->transport_mode = '';
-
-        $this->due_date = '';
-
-        $this->materials = [];
-
-        $this->addMaterialRow();
+        session()->flash(
+            'success',
+            'Gate Pass Saved Successfully'
+        );
     }
 
     public function render()

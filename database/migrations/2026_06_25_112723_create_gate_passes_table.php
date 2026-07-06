@@ -30,16 +30,58 @@ return new class extends Migration
                   ->nullable()
                   ->constrained('users');
 
-            $table->string('taken_by');
+            /*
+            |--------------------------------------------------------------------------
+            | Prepared By
+            |--------------------------------------------------------------------------
+            */
+            $table->string('prepared_name')->nullable();
+            $table->string('prepared_ic_no')->nullable();
+            $table->string('prepared_designation')->nullable();
+            $table->string('prepared_group')->nullable();
 
-            $table->string('destination');
+            /*
+            |--------------------------------------------------------------------------
+            | Taken Out By
+            |--------------------------------------------------------------------------
+            */
+            $table->string('taken_name')->nullable();
+            $table->string('taken_ic_no')->nullable();
+            $table->string('taken_designation')->nullable();
+            $table->string('taken_group')->nullable();
 
-            $table->string('transport_mode');
+            /*
+            |--------------------------------------------------------------------------
+            | Transport Details
+            |--------------------------------------------------------------------------
+            */
+            $table->string('vehicle_no')->nullable();
 
+            $table->string('destination')->nullable();
+
+            $table->string('transport_mode')->nullable();
+
+            /*
+            |--------------------------------------------------------------------------
+            | Returnable Material
+            |--------------------------------------------------------------------------
+            */
             $table->date('due_date')->nullable();
 
             $table->date('actual_return_date')->nullable();
 
+            /*
+            |--------------------------------------------------------------------------
+            | Description
+            |--------------------------------------------------------------------------
+            */
+            $table->text('description')->nullable();
+
+            /*
+            |--------------------------------------------------------------------------
+            | Status Flow
+            |--------------------------------------------------------------------------
+            */
             $table->enum('status', [
                 'PENDING_APPROVAL',
                 'APPROVED',

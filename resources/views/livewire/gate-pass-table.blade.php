@@ -1,161 +1,267 @@
-<div>
-    
-    <div class="bg-white p-6 rounded shadow">
+<div class="max-w-7xl mx-auto">
 
-    <div class="flex justify-between mb-4">
-        <h2 class="text-xl font-bold">Gate Pass Management</h2>
-
-        <button
-            wire:click="addRow"
-            class="bg-blue-600 text-black px-4 py-2 rounded">
-            Add Gate Pass
-        </button>
+    {{-- PAGE TITLE --}}
+    <div class="bg-white shadow rounded p-4 mb-4">
+        <h2 class="text-2xl font-bold">
+            {{ $category == 'RETURNABLE'
+                ? 'Returnable Material Gate Pass'
+                : 'Non Returnable Material Gate Pass' }}
+        </h2>
     </div>
 
-    @foreach($gatepasses as $gpIndex => $gatepass)
+    {{-- GATE PASS DETAILS --}}
+    <div class="bg-white shadow rounded p-4 mb-4">
 
-    <div class="border rounded mb-4">
-        <h3 class="font-bold text-lg mb-2">
-        Gate Pass {{ $gpIndex + 1 }}
+        <h3 class="font-bold text-lg mb-3">
+            Gate Pass Details
         </h3>
 
-        {{-- Gate Pass Row --}}
-        <table class="w-full border">
+        <table class="table-auto border w-full text-sm">
 
-            <thead>
+            <tr>
+                <td class="border p-2 font-semibold">
+                    Gate Pass No
+                </td>
 
-                <tr class="bg-gray-100">
+                <td class="border p-2">
+                    {{ $gate_pass_no }}
+                </td>
 
-                    <th class="border p-2">Category</th>
-                    <th class="border p-2">Taken By</th>
-                    <th class="border p-2">Destination</th>
-                    <th class="border p-2">Transport</th>
-                    <th class="border p-2">Due Date</th>
-                    <th class="border p-2">Status</th>
-                    <th class="border p-2">Action</th>
+                <td class="border p-2 font-semibold">
+                    Status
+                </td>
 
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                <tr>
-
-                    <td class="border p-2">
-
-                        <select
-                            wire:model="gatepasses.{{ $gpIndex }}.category"
-                            class="w-full border">
-
-                            <option value="RETURNABLE">
-                                Returnable
-                            </option>
-
-                            <option value="NON_RETURNABLE">
-                                Non Returnable
-                            </option>
-
-                        </select>
-
-                    </td>
-
-                    <td class="border p-2">
-                        <input
-                            type="text"
-                            wire:model="gatepasses.{{ $gpIndex }}.taken_by"
-                            class="w-full border">
-                    </td>
-
-                    <td class="border p-2">
-                        <input
-                            type="text"
-                            wire:model="gatepasses.{{ $gpIndex }}.destination"
-                            class="w-full border">
-                    </td>
-
-                    <td class="border p-2">
-                        <input
-                            type="text"
-                            wire:model="gatepasses.{{ $gpIndex }}.transport_mode"
-                            class="w-full border">
-                    </td>
-
-                    <td class="border p-2">
-
-                        @if(($gatepass['category'] ?? '') == 'RETURNABLE')
-
-                            <input
-                                type="date"
-                                wire:model="gatepasses.{{ $gpIndex }}.due_date"
-                                class="w-full border">
-
-                        @endif
-
-                    </td>
-
-                    <td class="border p-2">
-
-                        <select
-                            wire:model="gatepasses.{{ $gpIndex }}.status"
-                            class="w-full border">
-
-                            <option value="PENDING_APPROVAL">
-                                Pending Approval
-                            </option>
-
-                            <option value="APPROVED">
-                                Approved
-                            </option>
-
-                        </select>
-
-                    </td>
-
-                    <td class="border p-2 text-center">
-
-                        <button
-                            wire:click="deleteRow({{ $gpIndex }})"
-                            class="bg-red-600 text-white px-3 py-1 rounded">
-
-                            Delete Row
-
-                        </button>
-
-                    </td>
-
-                </tr>
-
-            </tbody>
+                <td class="border p-2">
+                    Pending Approval
+                </td>
+            </tr>
 
         </table>
 
-        {{-- Add Material Link --}}
-        <div class="p-2">
+    </div>
+
+    {{-- PREPARED BY --}}
+    <div class="bg-white shadow rounded p-4 mb-4">
+
+        <h3 class="font-bold mb-3">
+            Prepared By
+        </h3>
+
+        <table class="table-auto border w-3/4">
+
+            <tr>
+                <th class="border p-2">Name</th>
+                <th class="border p-2">IC No</th>
+                <th class="border p-2">Designation</th>
+                <th class="border p-2">Group</th>
+            </tr>
+
+            <tr>
+                <td class="border p-2">
+                    <input type="text"
+                        wire:model="prepared_name"
+                        class="w-full border-0">
+                </td>
+
+                <td class="border p-2">
+                    <input type="text"
+                        wire:model="prepared_ic"
+                        class="w-full border-0">
+                </td>
+
+                <td class="border p-2">
+                    <input type="text"
+                        wire:model="prepared_designation"
+                        class="w-full border-0">
+                </td>
+
+                <td class="border p-2">
+                    <input type="text"
+                        wire:model="prepared_group"
+                        class="w-full border-0">
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    {{-- TAKEN OUT BY --}}
+    <div class="bg-white shadow rounded p-4 mb-4">
+
+        <h3 class="font-bold mb-3">
+            Taken Out By
+        </h3>
+
+        <table class="table-auto border w-3/4">
+
+            <tr>
+                <th class="border p-2">Name</th>
+                <th class="border p-2">IC No</th>
+                <th class="border p-2">Designation</th>
+                <th class="border p-2">Group</th>
+            </tr>
+
+            <tr>
+                <td class="border p-2">
+                    <input type="text"
+                        wire:model="taken_name"
+                        class="w-full border-0">
+                </td>
+
+                <td class="border p-2">
+                    <input type="text"
+                        wire:model="taken_ic"
+                        class="w-full border-0">
+                </td>
+
+                <td class="border p-2">
+                    <input type="text"
+                        wire:model="taken_designation"
+                        class="w-full border-0">
+                </td>
+
+                <td class="border p-2">
+                    <input type="text"
+                        wire:model="taken_group"
+                        class="w-full border-0">
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    {{-- TRANSPORT DETAILS --}}
+    <div class="bg-white shadow rounded p-4 mb-4">
+
+        <h3 class="font-bold mb-3">
+            Transport Details
+        </h3>
+
+        <table class="table-auto border w-3/4">
+
+            <tr>
+
+                <td class="border p-2 font-semibold">
+                    Destination
+                </td>
+
+                <td class="border p-2">
+                    <input type="text"
+                        wire:model="destination"
+                        class="w-full border-0">
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td class="border p-2 font-semibold">
+                    Transport Mode
+                </td>
+
+                <td class="border p-2">
+                    <input type="text"
+                        wire:model="transport_mode"
+                        class="w-full border-0">
+                </td>
+
+            </tr>
+
+            @if($category == 'RETURNABLE')
+
+            <tr>
+
+                <td class="border p-2 font-semibold">
+                    Due Date
+                </td>
+
+                <td class="border p-2">
+                    <input type="date"
+                        wire:model="due_date"
+                        class="w-full border">
+                </td>
+
+            </tr>
+
+            @endif
+
+        </table>
+
+    </div>
+
+    {{-- DESCRIPTION --}}
+    <div class="bg-white shadow rounded p-4 mb-4">
+
+        <h3 class="font-bold mb-3">
+            Description
+        </h3>
+
+        <textarea
+            wire:model="description"
+            rows="4"
+            class="w-full border rounded p-2">
+        </textarea>
+
+    </div>
+
+    {{-- MATERIAL DETAILS --}}
+    <div class="bg-white shadow rounded p-4">
+
+        <div class="flex justify-between mb-3">
+
+            <h3 class="font-bold">
+                Material Details
+            </h3>
 
             <button
-                wire:click="addMaterialRow({{ $gpIndex }})"
-                class="text-blue-600">
+                wire:click="addMaterialRow"
+                class="bg-blue-600 text-black px-3 py-2 rounded">
 
-                + Add Material
+                Add Material
 
             </button>
 
         </div>
 
-        {{-- Material Table --}}
-        <table class="w-full border">
+        <table class="table-auto border w-full">
 
             <thead>
 
                 <tr class="bg-gray-100">
 
-                    <th class="border p-2">Material Code</th>
-                    <th class="border p-2">Material Name</th>
-                    <th class="border p-2">Qty</th>
-                    <th class="border p-2">Unit</th>
-                    <th class="border p-2">Remarks</th>
-                    <th class="border p-2">Action</th>
+                    <th class="border p-2">
+                        Material Code
+                    </th>
+
+                    <th class="border p-2">
+                        Material Name
+                    </th>
+
+                    <th class="border p-2">
+                        Description
+                    </th>
+
+                    <th class="border p-2">
+                        Qty
+                    </th>
+
+                    <th class="border p-2">
+                        Unit
+                    </th>
+
+                    <th class="border p-2">
+                        Price
+                    </th>
+
+                    <th class="border p-2">
+                        Remarks
+                    </th>
+
+                    <th class="border p-2">
+                        Action
+                    </th>
 
                 </tr>
 
@@ -163,63 +269,58 @@
 
             <tbody>
 
-            @foreach($gatepass['materials'] as $matIndex => $material)
+            @foreach($materials as $index => $material)
 
                 <tr>
 
                     <td class="border p-2">
-
-                        <select
-                            wire:model.live="gatepasses.{{ $gpIndex }}.materials.{{ $matIndex }}.material_code"
-                            class="w-full border">
-
-                            <option value="">
-                                Select
-                            </option>
-
-                            @foreach($materialsMaster as $master)
-
-                                <option value="{{ $master['material_code'] }}">
-                                    {{ $master['material_code'] }}
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
+                        <input type="text"
+                            wire:model="materials.{{ $index }}.material_code"
+                            class="w-full">
                     </td>
 
                     <td class="border p-2">
-                        {{ $material['material_name'] ?? '' }}
+                        <input type="text"
+                            wire:model="materials.{{ $index }}.material_name"
+                            class="w-full">
                     </td>
 
                     <td class="border p-2">
-
-                        <input
-                            type="number"
-                            wire:model="gatepasses.{{ $gpIndex }}.materials.{{ $matIndex }}.quantity"
-                            class="w-full border">
-
+                        <input type="text"
+                            wire:model="materials.{{ $index }}.description"
+                            class="w-full"
+                            placeholder="Description">
                     </td>
 
                     <td class="border p-2">
-                        {{ $material['unit'] ?? '' }}
+                        <input type="number"
+                            wire:model="materials.{{ $index }}.quantity"
+                            class="w-full">
                     </td>
 
                     <td class="border p-2">
+                        <input type="text"
+                            wire:model="materials.{{ $index }}.unit"
+                            class="w-full">
+                    </td>
 
-                        <input
-                            type="text"
-                            wire:model="gatepasses.{{ $gpIndex }}.materials.{{ $matIndex }}.remarks"
-                            class="w-full border">
+                    <td class="border p-2">
+                        <input type="number"
+                            wire:model="materials.{{ $index }}.price"
+                            class="w-full">
+                    </td>
 
+                    <td class="border p-2">
+                        <input type="text"
+                            wire:model="materials.{{ $index }}.remarks"
+                            class="w-full">
                     </td>
 
                     <td class="border p-2 text-center">
 
                         <button
-                            wire:click="deleteMaterialRow({{ $gpIndex }}, {{ $matIndex }})"
-                            class="bg-red-600 text-white px-3 py-1 rounded">
+                            wire:click="deleteMaterialRow({{ $index }})"
+                            class="bg-red-600 text-black px-2 py-1 rounded">
 
                             Delete
 
@@ -237,15 +338,4 @@
 
     </div>
 
-    @endforeach
-
-    <button
-        wire:click="save"
-        class="bg-green-600 text-black px-5 py-2 rounded">
-
-        Save All Gate Passes
-
-    </button>
-
-    </div>
 </div>

@@ -2,52 +2,117 @@
 
 <div class="p-6">
 
-    <h1 class="text-3xl font-bold mb-6">
-        Material Management System
-    </h1>
+    <div class="bg-white p-6 shadow rounded">
+<center>
+        <h1 class="text-xl font-bold mb-8 text-center">
+            Material Pass Web Portal
+        </h1>
+</center>
 
-    {{-- Dashboard Cards --}}
-    <div class="grid grid-cols-4 gap-4 mb-6">
+    <hr>
+        <table>
 
-        <div class="bg-white p-4 rounded shadow">
-            <h3 class="text-gray-600">Total Gate Passes</h3>
-            <p class="text-2xl font-bold">
-                {{ \App\Models\GatePass::count() }}
-            </p>
-        </div>
+            <tr>
 
-        <div class="bg-white p-4 rounded shadow">
-            <h3 class="text-gray-600">Pending Approval</h3>
-            <p class="text-2xl font-bold">
-                {{ \App\Models\GatePass::where('status','PENDING_APPROVAL')->count() }}
-            </p>
-        </div>
+                <!-- Department Materials -->
 
-        <div class="bg-white p-4 rounded shadow">
-            <h3 class="text-gray-600">Released</h3>
-            <p class="text-2xl font-bold">
-                {{ \App\Models\GatePass::where('status','RELEASED')->count() }}
-            </p>
-        </div>
+                
 
-        <div class="bg-white p-4 rounded shadow">
-            <h3 class="text-gray-600">Return Pending</h3>
-            <p class="text-2xl font-bold">
-                {{ \App\Models\GatePass::where('status','RETURN_PENDING')->count() }}
-            </p>
-        </div>
+                    <details>
+
+                        <summary
+                            class="bg-blue-800 text-black px-4 py-2 cursor-pointer font-semibold w-[280px] ">
+
+                            Department Materials
+
+                        </summary>
+
+                        <div class="bg-gray-200 border w-[450px]">
+
+                            <a href="/gatepass/returnable"
+                               class="block px-4 py-2 hover:bg-gray-300">
+
+                                Dept Outgoing Returnable Material
+
+                            </a>
+
+                            <a href="/gatepass/non-returnable"
+                               class="block px-4 py-2 hover:bg-gray-300">
+
+                                Dept Outgoing Non-Returnable Material
+
+                            </a>
+
+                        </div>
+
+                    </details>
+
+                
+
+                <!-- Department Materials Report -->
+
+                
+                
+                    <details>
+                    
+                        <summary
+                            class="bg-blue-800 text-black px-4 py-2 cursor-pointer font-semibold w-[320px]">
+                            Department Materials Report
+                         
+                        </summary>
+
+
+                        <div class="bg-gray-200 border w-[450px]">
+
+                            <a href="#"
+                               class="block px-4 py-2 hover:bg-gray-300">
+
+                                Returnable Material Report
+
+
+                            </a>
+
+                            <a href="#"
+                               class="block px-4 py-2 hover:bg-gray-300">
+
+                                Non Returnable Material Report
+
+                            </a>
+
+                            <a href="#"
+                               class="block px-4 py-2 hover:bg-gray-300">
+
+                                Pending Approval Report
+
+                            </a>
+
+                            <a href="#"
+                               class="block px-4 py-2 hover:bg-gray-300">
+
+                                Released Material Report
+
+                            </a>
+
+                            <a href="#"
+                               class="block px-4 py-2 hover:bg-gray-300">
+
+                                Return Pending Report
+
+                            </a>
+
+                        </div>
+
+                    </details>
+
+                
+
+            </tr>
+
+        </table>
 
     </div>
-
-    {{-- Gate Pass Section --}}
-    <livewire:gate-pass-table />
-
-    <div class="mt-8"></div>
-
-    {{-- Material Master Section --}}
-    <livewire:material-table />
+   
 
 </div>
-```
 
 </x-app-layout>

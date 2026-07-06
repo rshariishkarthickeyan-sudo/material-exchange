@@ -7,41 +7,46 @@ use Illuminate\Database\Eloquent\Model;
 class GatePass extends Model
 {
 
-    public $gatepasses = [
-    [
-        'category' => 'RETURNABLE',
-        'taken_by' => '',
-        'destination' => '',
-        'transport_mode' => '',
-        'due_date' => '',
-        'status' => 'PENDING_APPROVAL',
-
-        'materials' => [
-            [
-                'material_code' => '',
-                'material_name' => '',
-                'quantity' => 1,
-                'unit' => '',
-                'remarks' => '',
-            ]
-        ]
-    ]
-];
     protected $fillable = [
-        'gate_pass_no',
-        'category',
-        'created_by',
-        'approved_by',
-        'security_by',
-        'taken_by',
-        'destination',
-        'transport_mode',
-        'due_date',
-        'actual_return_date',
-        'status',
-        'remarks',
-        'approval_date',
-        'security_date'
+
+    'gate_pass_no',
+
+    'category',
+
+    'created_by',
+
+    'approved_by',
+
+    'security_by',
+
+    // Prepared By
+    'prepared_name',
+    'prepared_ic_no',
+    'prepared_designation',
+    'prepared_group',
+
+    // Taken Out By
+    'taken_name',
+    'taken_ic_no',
+    'taken_designation',
+    'taken_group',
+
+    // Transport
+    'vehicle_no',
+    'destination',
+    'transport_mode',
+
+    // Returnable
+    'due_date',
+    'actual_return_date',
+
+
+    // Existing
+    'taken_by',
+    'status',
+    'remarks',
+    'approval_date',
+    'security_date',
     ];
 
     protected $casts = [

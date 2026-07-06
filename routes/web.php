@@ -47,6 +47,22 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+    
+    Route::get('/gatepass/returnable', function () {
+    return view('gatepass.returnable');
+    })->middleware('auth');
+
+    Route::get('/gatepass/non-returnable', function () {
+    return view('gatepass.nonreturnable');
+    })->middleware('auth');    
+
+    Route::get('/materials/returnable', function () {
+    return view('materials.returnable');
+    });
+
+    Route::get('/materials/non-returnable', function () {
+    return view('materials.non-returnable');
+    });
 });
 
 require __DIR__.'/auth.php';
