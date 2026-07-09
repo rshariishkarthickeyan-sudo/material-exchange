@@ -10,14 +10,16 @@ class GatePass extends Model
     protected $fillable = [
 
     'gate_pass_no',
-
     'category',
 
     'created_by',
-
     'approved_by',
-
     'security_by',
+
+    'approver_remarks',
+    'security_remarks',
+
+    'status',
 
     // Prepared By
     'prepared_name',
@@ -30,30 +32,38 @@ class GatePass extends Model
     'taken_ic_no',
     'taken_designation',
     'taken_group',
+    'taken_by',
 
-    // Transport
+    // Authority
+    'authority_name',
+    'authority_ic_no',
+    'authority_designation',
+    'authority_group',
+
+    // Security
+    'security_name',
+    'security_ic_no',
+    'security_designation',
+    'security_group',
+
     'vehicle_no',
     'destination',
     'transport_mode',
 
-    // Returnable
     'due_date',
     'actual_return_date',
 
-
-    // Existing
-    'taken_by',
-    'status',
     'remarks',
     'approval_date',
     'security_date',
-    ];
+];
 
     protected $casts = [
         'due_date' => 'date',
         'actual_return_date' => 'date',
         'approval_date' => 'datetime',
         'security_date' => 'datetime',
+        'returned_date' => 'datetime',
     ];
 
     /*
@@ -64,7 +74,7 @@ class GatePass extends Model
 
     public function materials()
     {
-        return $this->hasMany(GatePassMaterial::class);
+        return $this->hasMany(GatePassMaterial::class,'gate_pass_id');
     }
 
     public function creator()
@@ -80,5 +90,10 @@ class GatePass extends Model
     public function security()
     {
         return $this->belongsTo(User::class, 'security_by');
+    }
+
+    public function returnedUser()
+    {
+    return $this->belongsTo(User::class, 'returned_by');
     }
 }

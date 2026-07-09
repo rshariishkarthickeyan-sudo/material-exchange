@@ -19,6 +19,6 @@ class GatePassMaterial extends Model
 
     public function gatePass()
     {
-        return $this->belongsTo(GatePass::class);
+        return $this->belongsTo(GatePass::class,'gate_pass_id');
     }
 }

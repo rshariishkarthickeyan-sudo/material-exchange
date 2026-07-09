@@ -13,7 +13,7 @@ return new class extends Migration
             $table->enum('role', [
                 'admin',
                 'employee',
-                'approver',
+                'authority',
                 'security'
             ])->default('employee')->after('password');
 

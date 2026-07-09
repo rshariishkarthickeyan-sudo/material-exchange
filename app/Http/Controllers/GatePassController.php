@@ -70,4 +70,22 @@ class GatePassController extends Controller
         return redirect()->route('gatepasses.index')
             ->with('success', 'Gate Pass Deleted Successfully');
     }
+
+    public function view($id)
+    {
+    $gatepass = GatePass::with('materials')->findOrFail($id);
+
+    return view('gatepasses.view', compact('gatepass'));
+    }
+    
+    public function approvalView($id)
+    {
+    $gatepass = GatePass::with('materials')
+        ->findOrFail($id);
+
+    return view(
+        'gatepasses.approval-view',
+        compact('gatepass')
+    );
+    }
 }

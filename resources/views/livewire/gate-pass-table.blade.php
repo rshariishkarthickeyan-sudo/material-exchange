@@ -1,13 +1,18 @@
-<div class="max-w-7xl mx-auto">
+<div id="gate-pass-content">
+    <div class="max-w-7xl mx-auto">
 
     {{-- PAGE TITLE --}}
-    <div class="bg-white shadow rounded p-4 mb-4">
-        <h2 class="text-2xl font-bold">
-            {{ $category == 'RETURNABLE'
-                ? 'Returnable Material Gate Pass'
-                : 'Non Returnable Material Gate Pass' }}
-        </h2>
+
+
+    @if(session()->has('success'))
+
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+
+        {{ session('success') }}
+
     </div>
+
+    @endif
 
     {{-- GATE PASS DETAILS --}}
     <div class="bg-white shadow rounded p-4 mb-4">
@@ -65,7 +70,7 @@
 
                 <td class="border p-2">
                     <input type="text"
-                        wire:model="prepared_ic"
+                        wire:model="prepared_ic_no"
                         class="w-full border-0">
                 </td>
 
@@ -85,6 +90,70 @@
         </table>
 
     </div>
+
+    <div class="flex items-start gap-4 mb-4">
+
+    <!-- Approving Authority Box -->
+    <div class="bg-white shadow rounded p-4 flex-1">
+
+        <h3 class="font-bold mb-3">
+            Approving Authority
+        </h3>
+
+        <table class="table-auto border w-full">
+
+            <tr>
+                <th class="border p-2">IC No</th>
+                <th class="border p-2">Designation</th>
+                <th class="border p-2">Group</th>
+            </tr>
+
+            <tr>
+                <td class="border p-2">
+                    {{ $authority_ic_no }}
+                </td>
+
+                <td class="border p-2">
+                    {{ $authority_designation }}
+                </td>
+
+                <td class="border p-2">
+                    {{ $authority_group }}
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <!-- Separate Dropdown Box -->
+    <div class="bg-white shadow rounded p-4 min-w-[250px]">
+
+        <label class="font-semibold block mb-2">
+            Select Authority
+        </label>
+
+        <select
+            wire:model.live="authority_id"
+            class="border rounded w-full p-2">
+
+            <option value="">
+                Choose Authority
+            </option>
+
+            @foreach($authorities as $authority)
+
+                <option value="{{ $authority->id }}">
+                    {{ $authority->name }}
+                </option>
+
+            @endforeach
+
+        </select>
+
+    </div>
+
+</div>
 
     {{-- TAKEN OUT BY --}}
     <div class="bg-white shadow rounded p-4 mb-4">
@@ -111,7 +180,7 @@
 
                 <td class="border p-2">
                     <input type="text"
-                        wire:model="taken_ic"
+                        wire:model="taken_ic_no"
                         class="w-full border-0">
                 </td>
 
@@ -338,4 +407,76 @@
 
     </div>
 
+  <div id="action-buttons" class="mt-6 text-center">
+
+    @if($editing)
+
+    <button
+        wire:click="update"
+        class="bg-yellow-600 text-white px-6 py-3 rounded shadow">
+
+        Update
+
+    </button>
+
+@else
+
+    <button
+        wire:click="save"
+        class="bg-green-600 text-white px-6 py-3 rounded shadow">
+
+        Submit
+
+    </button>
+
+@endif
+
+    <button
+        type="button"
+        onclick="printGatePass()"
+        class="bg-blue-600 text-white px-6 py-3 rounded shadow ml-3">
+
+        Print Gate Pass
+
+    </button>
+
+</div>
+    <script>
+function printGatePass() {
+
+    document.getElementById('action-buttons').style.display = 'none';
+
+    window.print();
+
+    document.getElementById('action-buttons').style.display = 'block';
+}
+</script>
+
+</div>
+
+</div>
+<style>
+@media print {
+
+    body * {
+        visibility: hidden;
+    }
+
+    #gate-pass-content,
+    #gate-pass-content * {
+        visibility: visible;
+    }
+
+    #gate-pass-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    #action-buttons {
+        display: none !important;
+    }
+}
+</style>
 </div>

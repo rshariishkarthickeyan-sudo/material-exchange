@@ -6,12 +6,25 @@ use Livewire\Component;
 use App\Models\GatePass;
 use App\Models\GatePassMaterial;
 use App\Models\Material;
+use App\Models\User;
 
 class GatePassTable extends Component
 {
+
+    public $authority_id = '';
+    public $authority_name = '';
+    public $authority_ic_no = '';
+    public $authority_designation = '';
+    public $authority_group = '';
+    public $authorities = [];
+
     public $gate_pass_no;
 
     public $category = 'RETURNABLE';
+    public $savedGatePassId = null;
+
+    public $editing = false;
+    public $gatePassId;
 
     // Prepared By
     public $prepared_name = '';
@@ -42,8 +55,18 @@ class GatePassTable extends Component
 
     public $materialsMaster = [];
 
-    public function mount()
+    
+    public $selected_authority = '';
+
+    public function mount($category = 'RETURNABLE', $id = null)
     {
+        $this->category = $category;
+        $user = auth()->user();
+    
+    $this->prepared_name = $user->name;
+    $this->prepared_ic_no = $user->id;
+    $this->prepared_designation = $user->desig;
+    $this->prepared_group = $user->group;
         $this->gate_pass_no =
             'GP-' . now()->format('YmdHis');
 
@@ -51,7 +74,55 @@ class GatePassTable extends Component
             ->get()
             ->toArray();
 
+        $this->authorities = User::where('role', 'authority')->get();
+
         $this->addMaterialRow();
+    if ($id) {
+
+    $this->editing = true;
+
+    $gatePass = GatePass::with('materials')
+        ->findOrFail($id);
+
+    $this->gatePassId = $gatePass->id;
+
+    $this->gate_pass_no = $gatePass->gate_pass_no;
+
+    $this->category = $gatePass->category;
+
+    $this->taken_name = $gatePass->taken_by;
+
+    $this->destination = $gatePass->destination;
+
+    $this->transport_mode = $gatePass->transport_mode;
+
+    $this->due_date = $gatePass->due_date;
+
+    $this->materials = [];
+
+    foreach ($gatePass->materials as $material) {
+
+        $this->materials[] = [
+
+            'material_code' => $material->material_code,
+
+            'material_name' => $material->material_name,
+
+            'description' => $material->description,
+
+            'quantity' => $material->quantity,
+
+            'unit' => $material->unit,
+
+            'price' => $material->price,
+
+            'remarks' => $material->remarks,
+
+        ];
+    }
+
+    return;
+}
     }
 
     public function addMaterialRow()
@@ -105,27 +176,57 @@ class GatePassTable extends Component
 
     public function save()
     {
-        $gatePass = GatePass::create([
 
-            'gate_pass_no' => $this->gate_pass_no,
-
-            'category' => $this->category,
-
-            'created_by' => auth()->id(),
-
-            'taken_by' => $this->taken_name,
-
-            'destination' => $this->destination,
-
-            'transport_mode' => $this->transport_mode,
-
-            'due_date' =>
-                $this->category == 'RETURNABLE'
-                ? $this->due_date
-                : null,
-
-            'status' => 'PENDING_APPROVAL',
+        $this->validate([
+        'taken_name' => 'required',
+        'destination' => 'required',
+        'transport_mode' => 'required',
+        'due_date' => 'required_if:category,RETURNABLE|date',
         ]);
+
+    $authority = User::find($this->authority_id);
+
+   $gatePass = GatePass::create([
+
+    'gate_pass_no' => $this->gate_pass_no,
+
+    'category' => $this->category,
+
+    'created_by' => auth()->id(),
+
+    'taken_by' => $this->taken_name,
+
+    // Prepared By
+    'prepared_name' => $this->prepared_name,
+    'prepared_ic_no' => $this->prepared_ic_no,
+    'prepared_designation' => $this->prepared_designation,
+    'prepared_group' => $this->prepared_group,
+
+    // Taken Out By
+    'taken_name' => $this->taken_name,
+    'taken_ic_no' => $this->taken_ic_no,
+    'taken_designation' => $this->taken_designation,
+    'taken_group' => $this->taken_group,
+
+    // Authority
+    'authority_name' => $authority?->name,
+    'authority_ic_no' => $authority?->id,
+    'authority_designation' => $authority?->desig,
+    'authority_group' => $authority?->group,
+
+    'destination' => $this->destination,
+    'transport_mode' => $this->transport_mode,
+    'vehicle_no' => $this->vehicle_no,
+    'description' => $this->description,
+
+    'due_date' => $this->category == 'RETURNABLE'
+        ? $this->due_date
+        : null,
+
+    'status' => 'PENDING_APPROVAL',
+]);
+
+        
 
         foreach ($this->materials as $material) {
 
@@ -155,9 +256,78 @@ class GatePassTable extends Component
 
         session()->flash(
             'success',
-            'Gate Pass Saved Successfully'
+            'Gate Pass Submitted Successfully'
         );
+        $this->savedGatePassId = $gatePass->id;
     }
+
+
+public function update()
+{
+    $gatePass = GatePass::findOrFail($this->gatePassId);
+
+    $gatePass->update([
+
+        'taken_by' => $this->taken_name,
+
+        'destination' => $this->destination,
+
+        'transport_mode' => $this->transport_mode,
+
+        'due_date' => $this->due_date,
+
+    ]);
+
+    GatePassMaterial::where(
+        'gate_pass_id',
+        $gatePass->id
+    )->delete();
+
+    foreach ($this->materials as $material) {
+
+        GatePassMaterial::create([
+
+            'gate_pass_id' => $gatePass->id,
+
+            'material_code' => $material['material_code'],
+
+            'material_name' => $material['material_name'],
+
+            'description' => $material['description'],
+
+            'quantity' => $material['quantity'],
+
+            'unit' => $material['unit'],
+
+            'price' => $material['price'],
+
+            'remarks' => $material['remarks'],
+
+        ]);
+    }
+
+    session()->flash(
+        'success',
+        'Gate Pass Updated Successfully'
+    );
+}
+
+
+  public function updatedAuthorityId($value)
+{
+    $authority = User::find($value);
+
+    if ($authority) {
+
+        $this->authority_ic_no = $authority->id;
+
+        $this->authority_designation =
+            $authority->desig ?? '';
+
+        $this->authority_group =
+            $authority->group ?? '';
+    }
+}
 
     public function render()
     {

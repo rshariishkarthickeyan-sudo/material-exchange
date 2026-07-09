@@ -21,7 +21,7 @@
                     <details>
 
                         <summary
-                            class="bg-blue-800 text-black px-4 py-2 cursor-pointer font-semibold w-[280px] ">
+                            class="bg-white-800 text-black px-4 py-2 cursor-pointer font-semibold w-[280px] ">
 
                             Department Materials
 
@@ -56,7 +56,7 @@
                     <details>
                     
                         <summary
-                            class="bg-blue-800 text-black px-4 py-2 cursor-pointer font-semibold w-[320px]">
+                            class="bg-white-800 text-black px-4 py-2 cursor-pointer font-semibold w-[320px]">
                             Department Materials Report
                          
                         </summary>
@@ -64,7 +64,7 @@
 
                         <div class="bg-gray-200 border w-[450px]">
 
-                            <a href="#"
+                            <a href="{{ route('returnable.report') }}"
                                class="block px-4 py-2 hover:bg-gray-300">
 
                                 Returnable Material Report
@@ -72,31 +72,45 @@
 
                             </a>
 
-                            <a href="#"
+                            <a href="{{ route('nonreturnable.report') }}"
                                class="block px-4 py-2 hover:bg-gray-300">
 
                                 Non Returnable Material Report
 
                             </a>
 
-                            <a href="#"
+                            <a href="{{ route('gatepass.report') }}"
                                class="block px-4 py-2 hover:bg-gray-300">
 
                                 Pending Approval Report
 
                             </a>
 
-                            <a href="#"
+                            <a href="{{ route('security.report') }}"
+                               class="block px-4 py-2 hover:bg-gray-300">
+
+                                Security Clearance Report
+
+                            </a>
+
+                            <a href="{{ route('released.report') }}"
                                class="block px-4 py-2 hover:bg-gray-300">
 
                                 Released Material Report
 
                             </a>
 
-                            <a href="#"
+                            <a href="{{ route('return.pending.report') }}"
                                class="block px-4 py-2 hover:bg-gray-300">
 
                                 Return Pending Report
+
+                            </a>
+
+                            <a href="{{ route('returned.report') }}"
+                                class="block px-4 py-2 hover:bg-gray-300">
+
+                                Returned Materials Report
 
                             </a>
 
