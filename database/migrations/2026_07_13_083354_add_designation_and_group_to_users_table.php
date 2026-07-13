@@ -8,14 +8,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('gate_pass_materials', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('desig')->nullable();
+            $table->string('group')->nullable();
         });
     }
 
     public function down(): void
     {
-        Schema::table('gate_pass_materials', function (Blueprint $table) {
-            $table->dropColumn('description');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['desig', 'group']);
         });
     }
 };

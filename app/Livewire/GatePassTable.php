@@ -60,6 +60,7 @@ class GatePassTable extends Component
 
     public function mount($category = 'RETURNABLE', $id = null)
     {
+        
         $this->category = $category;
         $user = auth()->user();
     
@@ -90,7 +91,7 @@ class GatePassTable extends Component
 
     $this->category = $gatePass->category;
 
-    $this->taken_name = $gatePass->taken_by;
+    $this->taken_name = $gatePass->taken_name;
 
     $this->destination = $gatePass->destination;
 
@@ -174,92 +175,92 @@ class GatePassTable extends Component
         }
     }
 
-    public function save()
-    {
-
-        $this->validate([
+public function save()
+{
+    $this->validate([
         'taken_name' => 'required',
         'destination' => 'required',
         'transport_mode' => 'required',
         'due_date' => 'required_if:category,RETURNABLE|date',
-        ]);
+    ]);
 
     $authority = User::find($this->authority_id);
 
-   $gatePass = GatePass::create([
+    $gatePass = GatePass::create([
 
-    'gate_pass_no' => $this->gate_pass_no,
+        'gate_pass_no' => 'GP-' . now()->format('YmdHis') . rand(100,999),
 
-    'category' => $this->category,
+        'category' => $this->category,
 
-    'created_by' => auth()->id(),
+        'created_by' => auth()->id(),
 
-    'taken_by' => $this->taken_name,
+        // Prepared By
+        'prepared_name' => $this->prepared_name,
+        'prepared_ic_no' => $this->prepared_ic_no,
+        'prepared_designation' => $this->prepared_designation,
+        'prepared_group' => $this->prepared_group,
 
-    // Prepared By
-    'prepared_name' => $this->prepared_name,
-    'prepared_ic_no' => $this->prepared_ic_no,
-    'prepared_designation' => $this->prepared_designation,
-    'prepared_group' => $this->prepared_group,
+        // Taken Out By
+        'taken_name' => $this->taken_name,
+        'taken_ic_no' => $this->taken_ic_no,
+        'taken_designation' => $this->taken_designation,
+        'taken_group' => $this->taken_group,
 
-    // Taken Out By
-    'taken_name' => $this->taken_name,
-    'taken_ic_no' => $this->taken_ic_no,
-    'taken_designation' => $this->taken_designation,
-    'taken_group' => $this->taken_group,
+        // Authority
+        'authority_name' => $authority?->name,
+        'authority_ic_no' => $authority?->id,
+        'authority_designation' => $authority?->desig,
+        'authority_group' => $authority?->group,
 
-    // Authority
-    'authority_name' => $authority?->name,
-    'authority_ic_no' => $authority?->id,
-    'authority_designation' => $authority?->desig,
-    'authority_group' => $authority?->group,
+        // Transport
+        'destination' => $this->destination,
+        'transport_mode' => $this->transport_mode,
+        'vehicle_no' => $this->vehicle_no,
 
-    'destination' => $this->destination,
-    'transport_mode' => $this->transport_mode,
-    'vehicle_no' => $this->vehicle_no,
-    'description' => $this->description,
+        // Description
+        'description' => $this->description,
 
-    'due_date' => $this->category == 'RETURNABLE'
-        ? $this->due_date
-        : null,
+        // Returnable
+        'due_date' => $this->category == 'RETURNABLE'
+            ? $this->due_date
+            : null,
 
-    'status' => 'PENDING_APPROVAL',
-]);
+        'status' => 'PENDING_APPROVAL',
+    ]);
 
-        
+    foreach ($this->materials as $material) {
 
-        foreach ($this->materials as $material) {
-
-            if (empty($material['material_code'])) {
-                continue;
-            }
-
-            GatePassMaterial::create([
-
-                'gate_pass_id' => $gatePass->id,
-
-                'material_code' => $material['material_code'],
-
-                'material_name' => $material['material_name'],
-
-                'description' => $material['description'],
-
-                'quantity' => $material['quantity'],
-
-                'unit' => $material['unit'],
-
-                'price' => $material['price'],
-
-                'remarks' => $material['remarks'],
-            ]);
+        if (empty($material['material_code'])) {
+            continue;
         }
 
-        session()->flash(
-            'success',
-            'Gate Pass Submitted Successfully'
-        );
-        $this->savedGatePassId = $gatePass->id;
+        GatePassMaterial::create([
+
+            'gate_pass_id' => $gatePass->id,
+
+            'material_code' => $material['material_code'],
+
+            'material_name' => $material['material_name'],
+
+            'description' => $material['description'],
+
+            'quantity' => $material['quantity'],
+
+            'unit' => $material['unit'],
+
+            'price' => $material['price'],
+
+            'remarks' => $material['remarks'],
+        ]);
     }
+
+    session()->flash(
+        'success',
+        'Gate Pass Submitted Successfully'
+    );
+
+    $this->savedGatePassId = $gatePass->id;
+}
 
 
 public function update()
@@ -268,7 +269,7 @@ public function update()
 
     $gatePass->update([
 
-        'taken_by' => $this->taken_name,
+        'taken_name' => $this->taken_name,
 
         'destination' => $this->destination,
 
@@ -318,7 +319,8 @@ public function update()
     $authority = User::find($value);
 
     if ($authority) {
-
+        
+        $this->authority_name = $authority->name;
         $this->authority_ic_no = $authority->id;
 
         $this->authority_designation =

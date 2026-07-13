@@ -10,19 +10,14 @@ return new class extends Migration
     {
         Schema::table('gate_passes', function (Blueprint $table) {
 
-            $table->string('prepared_name')->nullable();
-            $table->string('prepared_ic_no')->nullable();
             $table->string('prepared_designation')->nullable();
             $table->string('prepared_group')->nullable();
 
-            $table->string('taken_name')->nullable();
-            $table->string('taken_ic_no')->nullable();
             $table->string('taken_designation')->nullable();
             $table->string('taken_group')->nullable();
 
             $table->string('vehicle_no')->nullable();
 
-            $table->text('description')->nullable();
         });
     }
 
