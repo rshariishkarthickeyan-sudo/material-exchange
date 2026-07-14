@@ -65,24 +65,28 @@
                 <td class="border p-2">
                     <input type="text"
                         wire:model="prepared_name"
+                        readonly
                         class="w-full border-0">
                 </td>
 
                 <td class="border p-2">
                     <input type="text"
                         wire:model="prepared_ic_no"
+                        readonly
                         class="w-full border-0">
                 </td>
 
                 <td class="border p-2">
                     <input type="text"
                         wire:model="prepared_designation"
+                        readonly
                         class="w-full border-0">
                 </td>
 
                 <td class="border p-2">
                     <input type="text"
                         wire:model="prepared_group"
+                        readonly
                         class="w-full border-0">
                 </td>
             </tr>
@@ -174,7 +178,7 @@
             <tr>
                 <td class="border p-2">
                     <input type="text"
-                        wire:model="taken_name"
+                        wire:model.live="taken_name"
                         class="w-full border-0">
                 </td>
 
@@ -218,7 +222,7 @@
 
                 <td class="border p-2">
                     <input type="text"
-                        wire:model="destination"
+                        wire:model.live="destination"
                         class="w-full border-0">
                 </td>
 
@@ -232,7 +236,7 @@
 
                 <td class="border p-2">
                     <input type="text"
-                        wire:model="transport_mode"
+                        wire:model.live="transport_mode"
                         class="w-full border-0">
                 </td>
 
@@ -248,7 +252,7 @@
 
                 <td class="border p-2">
                     <input type="date"
-                        wire:model="due_date"
+                        wire:model.live="due_date"
                         class="w-full border">
                 </td>
 

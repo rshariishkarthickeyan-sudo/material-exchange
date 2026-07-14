@@ -28,6 +28,37 @@
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
+<!-- Designation -->
+<div class="mt-4">
+    <x-input-label for="desig" :value="__('Designation')" />
+
+    <x-text-input
+        id="desig"
+        class="block mt-1 w-full"
+        type="text"
+        name="desig"
+        :value="old('desig')"
+        required />
+
+    <x-input-error :messages="$errors->get('desig')" class="mt-2" />
+</div>
+
+<!-- Group -->
+<div class="mt-4">
+    <x-input-label for="group" :value="__('Group')" />
+
+    <x-text-input
+        id="group"
+        class="block mt-1 w-full"
+        type="text"
+        name="group"
+        :value="old('group')"
+        required />
+
+    <x-input-error :messages="$errors->get('group')" class="mt-2" />
+</div>
+
+
         <!-- Confirm Password -->
         <div class="mt-4">
             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
