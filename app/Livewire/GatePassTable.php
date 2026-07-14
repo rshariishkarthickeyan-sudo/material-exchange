@@ -86,7 +86,8 @@ class GatePassTable extends Component
 
     $this->gatePassId = $gatePass->id;
 
-    $this->gate_pass_no = $gatePass->gate_pass_no;
+    $this->gate_pass_no =
+    'GP-' . now()->format('YmdHis');
 
     $this->category = $gatePass->category;
 
