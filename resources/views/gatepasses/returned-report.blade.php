@@ -32,7 +32,7 @@
             <tr>
 
                 <td class="border p-2">
-                    {{ $gatepass->gate_pass_no }}
+                    {{ $gatepass->id }}
                 </td>
 
                 <td class="border p-2">

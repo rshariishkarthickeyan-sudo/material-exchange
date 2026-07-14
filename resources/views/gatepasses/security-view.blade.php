@@ -12,7 +12,7 @@
 
             <tr>
                 <td class="border p-2 font-bold">Gate Pass No</td>
-                <td class="border p-2">{{ $gatepass->gate_pass_no }}</td>
+                <td class="border p-2">{{ $gatepass->id }}</td>
             </tr>
 
             <tr>

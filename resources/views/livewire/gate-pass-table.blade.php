@@ -29,7 +29,7 @@
                 </td>
 
                 <td class="border p-2">
-                    {{ $gate_pass_no }}
+                {{ $gatePassId }}
                 </td>
 
                 <td class="border p-2 font-semibold">
@@ -229,19 +229,42 @@
             </tr>
 
             <tr>
+            <td class="border p-2 font-semibold">
+                Transport Mode
+            </td>
 
-                <td class="border p-2 font-semibold">
-                    Transport Mode
-                </td>
+            <td class="border p-2">
+                <select wire:model.live="transport_mode"
+                    class="w-full border rounded">
 
-                <td class="border p-2">
-                    <input type="text"
-                        wire:model.live="transport_mode"
-                        class="w-full border-0">
-                </td>
+                    <option value="">Select</option>
 
-            </tr>
+                    <option value="Company Vehicle">
+                        Company Vehicle
+                    </option>
 
+                    <option value="Own Vehicle">
+                        Own Vehicle
+                    </option>
+
+                </select>
+            </td>
+        </tr>
+        @if($transport_mode == 'Own Vehicle')
+
+        <tr>
+            <td class="border p-2 font-semibold">
+                Vehicle No
+            </td>
+
+            <td class="border p-2">
+                <input type="text"
+                    wire:model.live="vehicle_no"
+                    class="w-full border-0">
+            </td>
+        </tr>
+
+        @endif
             @if($category == 'RETURNABLE')
 
             <tr>

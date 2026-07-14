@@ -9,7 +9,6 @@ class GatePass extends Model
 
     protected $fillable = [
 
-    'gate_pass_no',
     'category',
 
     'created_by',
@@ -49,6 +48,8 @@ class GatePass extends Model
     'vehicle_no',
     'destination',
     'transport_mode',
+
+    'description',
 
     'due_date',
     'actual_return_date',

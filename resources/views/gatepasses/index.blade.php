@@ -66,7 +66,7 @@
                             </td>
 
                             <td class="border border-black p-2 text-black">
-                                {{ $gatepass->gate_pass_no }}
+                                {{ $gatePass->id }}
                             </td>
 
                             <td class="border border-black p-2 text-black">

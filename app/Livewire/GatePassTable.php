@@ -11,6 +11,7 @@ use App\Models\User;
 class GatePassTable extends Component
 {
 
+
     public $authority_id = '';
     public $authority_name = '';
     public $authority_ic_no = '';
@@ -18,7 +19,6 @@ class GatePassTable extends Component
     public $authority_group = '';
     public $authorities = [];
 
-    public $gate_pass_no;
 
     public $category = 'RETURNABLE';
     public $savedGatePassId = null;
@@ -68,8 +68,7 @@ class GatePassTable extends Component
     $this->prepared_ic_no = $user->id;
     $this->prepared_designation = $user->desig;
     $this->prepared_group = $user->group;
-        $this->gate_pass_no =
-            'GP-' . now()->format('YmdHis');
+    
 
         $this->materialsMaster = Material::orderBy('material_name')
             ->get()
@@ -85,10 +84,21 @@ class GatePassTable extends Component
     $gatePass = GatePass::with('materials')
         ->findOrFail($id);
 
-    $this->gatePassId = $gatePass->id;
+$this->gatePassId = $gatePass->id;
 
-    $this->gate_pass_no =
-    'GP-' . now()->format('YmdHis');
+    $this->taken_ic_no = $gatePass->taken_ic_no;
+    $this->taken_designation = $gatePass->taken_designation;
+    $this->taken_group = $gatePass->taken_group;
+
+    $this->authority_name = $gatePass->authority_name;
+    $this->authority_ic_no = $gatePass->authority_ic_no;
+    $this->authority_designation = $gatePass->authority_designation;
+    $this->authority_group = $gatePass->authority_group;
+
+    $this->vehicle_no = $gatePass->vehicle_no;
+    $this->description = $gatePass->description;
+
+    $this->gatePassId = $gatePass->id;
 
     $this->category = $gatePass->category;
 
@@ -189,7 +199,6 @@ public function save()
 
     $gatePass = GatePass::create([
 
-        'gate_pass_no' => 'GP-' . now()->format('YmdHis') . rand(100,999),
 
         'category' => $this->category,
 
@@ -269,16 +278,18 @@ public function update()
     $gatePass = GatePass::findOrFail($this->gatePassId);
 
     $gatePass->update([
+    'taken_name' => $this->taken_name,
+    'taken_ic_no' => $this->taken_ic_no,
+    'taken_designation' => $this->taken_designation,
+    'taken_group' => $this->taken_group,
 
-        'taken_name' => $this->taken_name,
+    'description' => $this->description,
 
-        'destination' => $this->destination,
-
-        'transport_mode' => $this->transport_mode,
-
-        'due_date' => $this->due_date,
-
-    ]);
+    'destination' => $this->destination,
+    'transport_mode' => $this->transport_mode,
+    'vehicle_no' => $this->vehicle_no,
+    'due_date' => $this->due_date,
+]);
 
     GatePassMaterial::where(
         'gate_pass_id',
