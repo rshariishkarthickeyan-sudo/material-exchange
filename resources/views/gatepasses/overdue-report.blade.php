@@ -5,7 +5,7 @@
     <div class="bg-white shadow rounded p-4">
 
         <h2 class="text-2xl font-bold mb-4">
-            Pending Material Report
+            Overdue Materials Report
         </h2>
 
         <table class="table-auto w-full border">

@@ -5,7 +5,7 @@
     <div class="bg-white shadow rounded p-4">
 
         <h2 class="text-2xl font-bold mb-4">
-            Pending Material Report
+            Pending Approval Report
         </h2>
 
         <table class="table-auto w-full border">
@@ -34,7 +34,7 @@
                 <tr>
 
                     <td class="border p-2">
-                        {{ $gatepass->id }}
+                        {{ $gatepass->gate_pass_no }}
                     </td>
 
                     <td class="border p-2">
@@ -42,7 +42,7 @@
                     </td>
 
                     <td class="border p-2">
-                        {{ $gatepass->taken_name }}
+                        {{ $gatepass->taken_by }}
                     </td>
 
                     <td class="border p-2">
@@ -60,19 +60,21 @@
                     <td class="border p-2">
                         {{ $gatepass->created_at->format('d-m-Y') }}
                     </td>
-<td class="border p-2">
 
-    <a href="{{ route('gatepass.approval-view', $gatepass->id) }}"
-       class="bg-blue-500 text-white px-3 py-1 rounded">
-       View
-    </a>
+                    <td class="border p-2">
 
-    <a href="{{ route('gatepass.edit', $gatepass->id) }}"
-       class="bg-yellow-500 text-white px-3 py-1 rounded ml-2">
-       Edit
-    </a>
+                        <a href="{{ route('gatepass.approval-view', $gatepass->id) }}"
+                           class="bg-blue-500 text-white px-3 py-1 rounded">
+                           View
+                        </a>
 
-</td>
+                        <a href="{{ route('gatepass.edit', $gatepass->id) }}"
+                           class="bg-yellow-500 text-white px-3 py-1 rounded ml-2">
+                           Edit
+                        </a>
+
+                    </td>
+
                 </tr>
 
                 @endforeach

@@ -14,7 +14,7 @@
 
             <tr>
                 <td class="border p-2 font-bold">Gate Pass No</td>
-                <td class="border p-2">{{ $gatepass->gate_pass_no }}</td>
+                <td class="border p-2">{{ $gatepass->id }}</td>
             </tr>
 
             <tr>
@@ -24,7 +24,7 @@
 
             <tr>
                 <td class="border p-2 font-bold">Taken By</td>
-                <td class="border p-2">{{ $gatepass->taken_by }}</td>
+                <td class="border p-2">{{ $gatepass->taken_name }}</td>
             </tr>
 
             <tr>

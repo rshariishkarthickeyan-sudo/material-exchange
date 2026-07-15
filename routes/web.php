@@ -14,9 +14,78 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
 
-    $gatepasses = GatePass::latest()->get();
+    $recentGatePasses = GatePass::latest()
+    ->take(5)
+    ->get();
 
-    return view('dashboard', compact('gatepasses'));
+    $totalGatePasses = GatePass::count();
+
+    $pendingApproval = GatePass::where(
+        'status',
+        'PENDING_APPROVAL'
+    )->count();
+
+    $approved = GatePass::where(
+        'status',
+        'APPROVED'
+    )->count();
+
+    $released = GatePass::where(
+        'status',
+        'RELEASED'
+    )->count();
+
+    $returned = GatePass::where(
+        'status',
+        'RETURNED'
+    )->count();
+
+    $overdue = GatePass::where(
+        'category',
+        'RETURNABLE'
+    )
+    ->where('status', '!=', 'RETURNED')
+    ->whereDate('due_date', '<', now())
+    ->count();
+
+    $dueTomorrow = GatePass::where('category', 'RETURNABLE')
+    ->where('status', '!=', 'RETURNED')
+    ->whereDate('due_date', now()->addDay())
+    ->count();
+
+    return view('dashboard', compact(
+    'totalGatePasses',
+    'pendingApproval',
+    'approved',
+    'released',
+    'returned',
+    'overdue',
+    'recentGatePasses',
+    'pendingApproval',
+    'overdue',
+    'dueTomorrow',
+    ));
+
+    $pendingApproval = GatePass::where(
+    'status',
+    'PENDING_APPROVAL'
+)->count();
+
+$overdueMaterials = GatePass::where(
+    'category',
+    'RETURNABLE'
+)
+->where('status', '!=', 'RETURNED')
+->whereDate('due_date', '<', now())
+->count();
+
+$dueTomorrow = GatePass::where(
+    'category',
+    'RETURNABLE'
+)
+->where('status', '!=', 'RETURNED')
+->whereDate('due_date', now()->addDay()->toDateString())
+->count();
 
 })->middleware(['auth'])->name('dashboard');
 
@@ -64,9 +133,9 @@ Route::middleware(['auth'])->group(function () {
     return view('materials.non-returnable');
     });
 
-    Route::get('/department-materials-report', function () {
+    Route::get('/pending-approval-report', function () {
 
-    $gatepasses = GatePass::where(
+    $gatepasses = \App\Models\GatePass::where(
         'status',
         'PENDING_APPROVAL'
     )->latest()->get();
@@ -76,7 +145,7 @@ Route::middleware(['auth'])->group(function () {
         compact('gatepasses')
     );
 
-})->name('gatepass.report');
+})->middleware(['auth'])->name('pending.approval.report');
 
     Route::get('/gatepass/view/{id}', function ($id) {
 
@@ -311,6 +380,36 @@ Route::get(
     '/gatepass/{id}/approval-view',
     [GatePassController::class, 'approvalView']
     )->name('gatepass.approval-view');
+
+Route::get('/overdue-materials-report', function () {
+
+    $gatepasses = \App\Models\GatePass::where('category', 'RETURNABLE')
+        ->where('status', '!=', 'RETURNED')
+        ->whereDate('due_date', '<', today())
+        ->get();
+
+    return view(
+        'gatepasses.overdue-report',
+        compact('gatepasses')
+    );
+
+})->name('overdue.report');
+
+Route::get('/due-tomorrow-report', function () {
+
+    $gatepasses = \App\Models\GatePass::where('category', 'RETURNABLE')
+        ->where('status', '!=', 'RETURNED')
+        ->whereDate('due_date', today()->addDay())
+        ->get();
+
+    return view(
+        'gatepasses.due-tomorrow-report',
+        compact('gatepasses')
+    );
+
+})->name('due.tomorrow.report');
+
+
 });
 
 require __DIR__.'/auth.php';
