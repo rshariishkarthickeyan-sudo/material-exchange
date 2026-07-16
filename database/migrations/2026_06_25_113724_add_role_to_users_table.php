@@ -8,24 +8,20 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-
+       Schema::table('users', function (Blueprint $table) {
             $table->enum('role', [
-                'admin',
-                'employee',
-                'authority',
-                'security'
-            ])->default('employee')->after('password');
-
+                'EMPLOYEE',
+                'APPROVER',
+                'SECURITY',
+                'ADMIN'
+            ])->default('EMPLOYEE');
         });
     }
 
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-
-            $table->dropColumn('role');
-
+        $table->dropColumn('role');
         });
     }
 };

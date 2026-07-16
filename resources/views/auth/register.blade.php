@@ -1,83 +1,171 @@
 <x-guest-layout>
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- Name -->
+        <!-- Username -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+            <x-input-label for="username" :value="'Username'" />
+            <x-text-input id="username"
+                class="block mt-1 w-full"
+                type="text"
+                name="username"
+                :value="old('username')"
+                required />
+            <x-input-error :messages="$errors->get('username')" class="mt-2" />
+        </div>
+
+        <!-- Name -->
+        <div class="mt-4">
+            <x-input-label for="name" :value="'Name'" />
+            <x-text-input id="name"
+                class="block mt-1 w-full"
+                type="text"
+                name="name"
+                :value="old('name')"
+                required />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
-        <!-- Email Address -->
+        <!-- Email -->
         <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+            <x-input-label for="email" :value="'Email'" />
+            <x-text-input id="email"
+                class="block mt-1 w-full"
+                type="email"
+                name="email"
+                :value="old('email')"
+                required />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <!-- Designation -->
+        <div class="mt-4">
+            <x-input-label for="desig" :value="'Designation'" />
+            <x-text-input id="desig"
+                class="block mt-1 w-full"
+                type="text"
+                name="desig"
+                :value="old('desig')"
+                required />
+            <x-input-error :messages="$errors->get('desig')" class="mt-2" />
+        </div>
+
+        <!-- Unit -->
+        <div class="mt-4">
+            <x-input-label for="unit" :value="'Unit'" />
+            <x-text-input id="unit"
+                class="block mt-1 w-full"
+                type="text"
+                name="unit"
+                :value="old('unit')"
+                required />
+            <x-input-error :messages="$errors->get('unit')" class="mt-2" />
+        </div>
+
+        <!-- Section -->
+        <div class="mt-4">
+            <x-input-label for="sec" :value="'Section'" />
+            <x-text-input id="sec"
+                class="block mt-1 w-full"
+                type="text"
+                name="sec"
+                :value="old('sec')"
+                required />
+            <x-input-error :messages="$errors->get('sec')" class="mt-2" />
+        </div>
+
+        <!-- Division -->
+        <div class="mt-4">
+            <x-input-label for="div" :value="'Division'" />
+            <x-text-input id="div"
+                class="block mt-1 w-full"
+                type="text"
+                name="div"
+                :value="old('div')"
+                required />
+            <x-input-error :messages="$errors->get('div')" class="mt-2" />
+        </div>
+
+        <!-- Group -->
+        <div class="mt-4">
+            <x-input-label for="group" :value="'Group'" />
+            <x-text-input id="group"
+                class="block mt-1 w-full"
+                type="text"
+                name="group"
+                :value="old('group')"
+                required />
+            <x-input-error :messages="$errors->get('group')" class="mt-2" />
+        </div>
+
+        <!-- Sub Group -->
+        <div class="mt-4">
+            <x-input-label for="subgroup" :value="'Sub Group'" />
+            <x-text-input id="subgroup"
+                class="block mt-1 w-full"
+                type="text"
+                name="subgroup"
+                :value="old('subgroup')"
+                required />
+            <x-input-error :messages="$errors->get('subgroup')" class="mt-2" />
+        </div>
+
+        <!-- Role -->
+        <div class="mt-4">
+            <x-input-label for="role" :value="'Role'" />
+
+            <select name="role"
+                id="role"
+                class="block mt-1 w-full border rounded-md">
+
+                <option value="employee">Employee</option>
+                <option value="authority">Approving Authority</option>
+                <option value="security">Security</option>
+                <option value="admin">Admin</option>
+
+            </select>
         </div>
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" :value="'Password'" />
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+            <x-text-input id="password"
+                class="block mt-1 w-full"
+                type="password"
+                name="password"
+                required />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-<!-- Designation -->
-<div class="mt-4">
-    <x-input-label for="desig" :value="__('Designation')" />
-
-    <x-text-input
-        id="desig"
-        class="block mt-1 w-full"
-        type="text"
-        name="desig"
-        :value="old('desig')"
-        required />
-
-    <x-input-error :messages="$errors->get('desig')" class="mt-2" />
-</div>
-
-<!-- Group -->
-<div class="mt-4">
-    <x-input-label for="group" :value="__('Group')" />
-
-    <x-text-input
-        id="group"
-        class="block mt-1 w-full"
-        type="text"
-        name="group"
-        :value="old('group')"
-        required />
-
-    <x-input-error :messages="$errors->get('group')" class="mt-2" />
-</div>
-
-
         <!-- Confirm Password -->
         <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <x-input-label for="password_confirmation" :value="'Confirm Password'" />
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+            <x-text-input id="password_confirmation"
+                class="block mt-1 w-full"
+                type="password"
+                name="password_confirmation"
+                required />
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+        <div class="flex items-center justify-end mt-6">
+
+            <a class="underline text-sm text-gray-600 hover:text-gray-900"
+                href="{{ url('/') }}">
+                Already registered?
             </a>
 
             <x-primary-button class="ms-4">
-                {{ __('Register') }}
+                Register
             </x-primary-button>
+
         </div>
+
     </form>
+
 </x-guest-layout>

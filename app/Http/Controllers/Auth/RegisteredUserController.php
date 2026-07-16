@@ -31,27 +31,40 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'desig' => ['required'],
-            'group' => ['required'],
+    'username' => ['required', 'string', 'max:255', 'unique:users'],
+    'name' => ['required', 'string', 'max:255'],
+    'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
 
-        ]);
+    'desig' => ['required'],
+    'unit' => ['required'],
+    'sec' => ['required'],
+    'div' => ['required'],
+    'group' => ['required'],
+    'subgroup' => ['required'],
+    'role' => ['required'],
+
+    'password' => ['required', 'confirmed', Rules\Password::defaults()],
+    ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+    'username' => $request->username,
+    'name' => $request->name,
+    'email' => $request->email,
 
-            'desig' => $request->desig,
-            'group' => $request->group,
-        ]);
+    'desig' => $request->desig,
+    'unit' => $request->unit,
+    'sec' => $request->sec,
+    'div' => $request->div,
+    'group' => $request->group,
+    'subgroup' => $request->subgroup,
+    'role' => $request->role,
+
+    'password' => Hash::make($request->password),
+    ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+        
+        return redirect('/');
     }
 }
