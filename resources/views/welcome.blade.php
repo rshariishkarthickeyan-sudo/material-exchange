@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+@if(auth()->check())
+    <script>
+        window.location.replace("{{ route('dashboard') }}");
+    </script>
+@endif
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,45 +27,65 @@
             Gate Pass & Material Tracking Portal
         </p>
 
-        <div class="space-y-4">
+<form method="POST" action="{{ route('login') }}" autocomplete="off">
+    @csrf
 
-    <div>
+    <div class="mb-4">
         <label class="block mb-1 font-semibold">
             Username
         </label>
 
-        <input type="text"
-               class="w-full border rounded px-3 py-2"
-               placeholder="Enter Username">
+        <input
+            type="text"
+            name="username"
+            autocomplete="off"
+            placeholder="Enter Username"
+            class="w-full border rounded px-3 py-2"
+            required>
     </div>
 
-    <div>
+    <div class="mb-4">
         <label class="block mb-1 font-semibold">
             Password
         </label>
 
-        <input type="password"
-               class="w-full border rounded px-3 py-2"
-               placeholder="Enter Password">
+        <input
+            type="password"
+            name="password"
+            autocomplete="new-password"
+            placeholder="Enter Password"
+            class="w-full border rounded px-3 py-2"
+            required>
     </div>
 
-    <div>
-        <label class="block mb-1 font-semibold">
-            User role
-        </label>
+    <div class="mb-4">
+    <label class="block mb-1 font-semibold">
+        User Role
+    </label>
 
-        <select class="w-full border rounded px-3 py-2">
-            <option>Employee</option>
-            <option>Approving Authority</option>
-            <option>Security</option>
-            <option>Admin</option>
-        </select>
-    </div>
+    <select
+        name="role"
+        required
+        class="w-full border rounded px-3 py-2">
+
+        <option value="" selected disabled>
+            Select Role
+        </option>
+
+        <option value="employee">Employee</option>
+        <option value="authority">Approving Authority</option>
+        <option value="security">Security</option>
+        <option value="admin">Admin</option>
+
+    </select>
+</div>
 
     <button
-        class="block w-40 mx-auto text-center bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">
+        type="submit"
+        class="block w-40 mx-auto bg-blue-600 text-white py-2 rounded">
         Login
     </button>
+</form>
 
     <div class="text-center mt-4">
         <p class="text-gray-600">
